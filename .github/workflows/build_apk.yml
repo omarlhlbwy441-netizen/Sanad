@@ -1,0 +1,27 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch: # يسمح بتشغيل البناء يدوياً من واجهة قيتهاب
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: 📥 Checkout source code
+        uses: actions/checkout@v2
+
+      - name: ⚙️ Build with Buildozer
+        uses: ArtemSBulgakov/buildozer-action@v1
+        id: buildozer
+        with:
+          command: buildozer android debug
+          buildozer_version: master
+
+      - name: 📦 Upload APK Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: Sanad-Sovereign-Nexus-APK
+          path: ${{ steps.buildozer.outputs.filename }}
