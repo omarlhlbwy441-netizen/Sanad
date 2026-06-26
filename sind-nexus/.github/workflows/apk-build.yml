@@ -1,0 +1,100 @@
+name: APK Auto-Build
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+
+    - name: Install Buildozer & Dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y           python3-pip           build-essential           git           ffmpeg           libsdl2-dev           libsdl2-image-dev           libsdl2-mixer-dev           libsdl2-ttf-dev           libportmidi-dev           libswscale-dev           libavformat-dev           libavcodec-dev           zlib1g-dev           libgstreamer1.0           gstreamer1.0-plugins-base           gstreamer1.0-plugins-good
+        pip install buildozer cython
+
+    - name: Create Buildozer Spec
+      run: |
+        cat > buildozer.spec << 'EOF'
+[app]
+title = SIND NEXUS
+package.name = sindnexus
+package.domain = org.sindnexus
+source.dir = .
+source.include_exts = py,png,jpg,kv,atlas,html,css,js,ttf,woff,woff2
+version = 4.0.0
+requirements = python3,kivy,fastapi,httpx,websockets
+orientation = portrait
+fullscreen = 0
+android.api = 33
+android.minapi = 21
+android.sdk = 33
+android.ndk = 25b
+android.arch = arm64-v8a
+android.permissions = INTERNET,RECORD_AUDIO,CAMERA,ACCESS_FINE_LOCATION,ACCESS_COARSE_LOCATION
+android.wakelock = True
+android.presplash_color = #0a0a1a
+android.icon = static/assets/icon.png
+android.presplash = static/assets/splash.png
+[buildozer]
+log_level = 2
+warn_on_root = 1
+EOF
+
+    - name: Build APK
+      run: |
+        buildozer android debug
+
+    - name: Upload APK Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: SIND-NEXUS-v4-APK
+        path: bin/*.apk
+        retention-days: 30
+
+    - name: Create Release
+      if: github.ref == 'refs/heads/main'
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: v${{ github.run_number }}
+        name: SIND NEXUS v4.0.${{ github.run_number }}
+        body: |
+          🛡️ SIND NEXUS v4.0 - Voice-Powered AI Companion
+
+          Features:
+          - GeoMemory GPS System
+          - VoiceDNA Isolator
+          - Emotional Core
+          - Generative Companion (4 Personas)
+          - Voice Persona Engine
+          - Language Matrix (47 Languages)
+          - Hologram System
+          - Proactive Alerts
+          - Voice Calls
+
+          Built automatically via GitHub Actions
+        files: bin/*.apk
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

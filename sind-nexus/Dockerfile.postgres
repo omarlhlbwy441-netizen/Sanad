@@ -1,0 +1,7 @@
+FROM postgres:15-alpine
+
+ENV POSTGRES_DB=sindnexus
+ENV POSTGRES_USER=sinduser
+ENV POSTGRES_PASSWORD=sindpass123
+
+EXPOSE 5432

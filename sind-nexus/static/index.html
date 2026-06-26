@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سند نيكسوس v4.0 | SIND NEXUS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00d4ff;
+            --secondary: #7b2dff;
+            --accent: #ff2d7b;
+            --gold: #ffd700;
+            --dark: #0a0a1a;
+            --darker: #050510;
+            --card: rgba(15, 15, 35, 0.9);
+            --glass: rgba(255, 255, 255, 0.05);
+            --glow-primary: 0 0 20px rgba(0, 212, 255, 0.5);
+            --glow-secondary: 0 0 20px rgba(123, 45, 255, 0.5);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: var(--darker);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .bg-animation {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(ellipse at 20% 80%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(123, 45, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(255, 45, 123, 0.05) 0%, transparent 70%);
+        }
+
+        .particles {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px; height: 4px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: float 15s infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+        }
+
+        .header {
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+            background: rgba(10, 10, 26, 0.8);
+            backdrop-filter: blur(20px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            width: 50px; height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: var(--glow-primary);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(0, 212, 255, 0.8); }
+        }
+
+        .logo-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 20px;
+            font-size: 12px;
+        }
+
+        .status-dot {
+            width: 8px; height: 8px;
+            background: #00ff88;
+            border-radius: 50%;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #fff, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 600px;
+            margin: 0 auto 30px;
+            line-height: 1.8;
+        }
+
+        .activation-btn {
+            padding: 15px 40px;
+            font-size: 1.3rem;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            border-radius: 50px;
+            color: #fff;
+            cursor: pointer;
+            box-shadow: var(--glow-primary);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .activation-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 40px rgba(0, 212, 255, 0.7);
+        }
+
+        .systems-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .system-card {
+            background: var(--card);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .system-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .system-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: var(--glow-primary);
+        }
+
+        .system-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .system-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        .system-card p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .system-status {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 12px;
+            font-size: 11px;
+            color: #00ff88;
+            margin-top: 15px;
+        }
+
+        .voice-interface {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: rgba(10, 10, 26, 0.95);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 50px;
+            padding: 10px 30px;
+            backdrop-filter: blur(20px);
+        }
+
+        .voice-btn {
+            width: 60px; height: 60px;
+            border-radius: 50%;
+            border: 2px solid var(--primary);
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(123, 45, 255, 0.2));
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .voice-btn:hover {
+            transform: scale(1.1);
+            box-shadow: var(--glow-primary);
+        }
+
+        .voice-btn.recording {
+            animation: record-pulse 1s infinite;
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+        }
+
+        @keyframes record-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        .voice-wave {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            height: 40px;
+        }
+
+        .wave-bar {
+            width: 4px;
+            background: var(--primary);
+            border-radius: 2px;
+            animation: wave 1s ease-in-out infinite;
+        }
+
+        .wave-bar:nth-child(1) { height: 10px; animation-delay: 0s; }
+        .wave-bar:nth-child(2) { height: 20px; animation-delay: 0.1s; }
+        .wave-bar:nth-child(3) { height: 30px; animation-delay: 0.2s; }
+        .wave-bar:nth-child(4) { height: 25px; animation-delay: 0.3s; }
+        .wave-bar:nth-child(5) { height: 15px; animation-delay: 0.4s; }
+
+        @keyframes wave {
+            0%, 100% { transform: scaleY(0.5); opacity: 0.5; }
+            50% { transform: scaleY(1); opacity: 1; }
+        }
+
+        .companion-selector {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 150;
+        }
+
+        .companion-avatar {
+            width: 60px; height: 60px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            background: var(--card);
+        }
+
+        .companion-avatar:hover, .companion-avatar.active {
+            border-color: var(--primary);
+            box-shadow: var(--glow-primary);
+            transform: scale(1.1);
+        }
+
+        .hologram-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 212, 255, 0.05);
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .hologram-overlay.active {
+            opacity: 1;
+        }
+
+        .response-panel {
+            position: fixed;
+            top: 100px;
+            right: 30px;
+            width: 350px;
+            max-height: 60vh;
+            background: var(--card);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 20px;
+            padding: 20px;
+            z-index: 150;
+            overflow-y: auto;
+            backdrop-filter: blur(20px);
+            display: none;
+        }
+
+        .response-panel.active {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(50px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .response-message {
+            padding: 12px 16px;
+            background: rgba(0, 212, 255, 0.1);
+            border-radius: 15px;
+            margin-bottom: 10px;
+            border-right: 3px solid var(--primary);
+        }
+
+        .lang-selector {
+            position: fixed;
+            left: 30px;
+            top: 100px;
+            z-index: 150;
+        }
+
+        .lang-btn {
+            padding: 10px 20px;
+            background: var(--card);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 10px;
+            color: #fff;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .lang-btn:hover {
+            background: rgba(0, 212, 255, 0.2);
+            border-color: var(--primary);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px;
+            border-top: 1px solid rgba(0, 212, 255, 0.1);
+            margin-top: 60px;
+        }
+
+        .footer p {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.9rem;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--darker); }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
+
+        @media (max-width: 768px) {
+            .systems-grid { grid-template-columns: 1fr; padding: 20px; }
+            .companion-selector { right: 10px; }
+            .response-panel { width: 90%; right: 5%; left: 5%; }
+            .voice-interface { width: 90%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    <div class="particles" id="particles"></div>
+
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">🛡️</div>
+            <div class="logo-text">SIND NEXUS</div>
+        </div>
+        <div class="status-badge">
+            <span class="status-dot"></span>
+            <span>سند نكسس اونلاين</span>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>سند نيكسوس v4.0</h1>
+        <p>منصة ذكاء اصطناعي صوتي متقدمة — GeoMemory، VoiceDNA، Emotional Core، Hologram، ورفيقك الذكي بـ 4 شخصيات</p>
+        <button class="activation-btn" onclick="activateSystem()">
+            🚀 تفعيل النظام
+        </button>
+    </section>
+
+    <section class="systems-grid">
+        <div class="system-card">
+            <div class="system-icon">🌍</div>
+            <h3>GeoMemory</h3>
+            <p>ذاكرة جغرافية ذكية تحفظ السياقات المكانية وتسترجعها تلقائياً عند العودة لنفس الموقع</p>
+            <span class="system-status">● نشط</span>
+        </div>
+
+        <div class="system-card">
+            <div class="system-icon">🎙️</div>
+            <h3>VoiceDNA Isolator</h3>
+            <p>بصمة صوتية فريدة لكل مستخدم — تحقق هوية الصوت بذكاء اصطناعي متقدم</p>
+            <span class="system-status">● نشط</span>
+        </div>
+
+        <div class="system-card">
+            <div class="system-icon">💙</div>
+            <h3>Emotional Core</h3>
+            <p>كشف المشاعر في الوقت الفعلي وردود عاطفية ذكية تتكيف مع حالتك النفسية</p>
+            <span class="system-status">● نشط</span>
+        </div>
+
+        <div class="system-card">
+            <div class="system-icon">🤖</div>
+            <h3>Generative Companion</h3>
+            <p>4 شخصيات ذكية: عاشق 💕، طبيب 🩺، مرشد ✨، محلل 📊 — اختر رفيقك المثالي</p>
+            <span class="system-status">● نشط</span>
+        </div>
+
+        <div class="system-card">
+            <div class="system-icon">🎭</div>
+            <h3>Voice Persona Engine</h3>
+            <p>5 شخصيات صوتية جاهزة + إنشاء شخصية صوتية مخصصة بتسجيل صوتك</p>
+            <span class="system-status">● نشط</span>
+        </div>
+
+        <div class="system-card">
+            <div class="system-icon">🌐</div>
+            <h3>Language Matrix</h3>
+            <p>47 لغة مع ترجمة فورية وكشف تلقائي للغة — تواصل بأي لغة في العالم</p>
+            <span class="system-status">● نشط</span>
+        </div>
+
+        <div class="system-card">
+            <div class="system-icon">👁️</div>
+            <h3>Hologram System</h3>
+            <p>تفعيل تلقائي للهولوغرام عند المكالمات الصوتية — عرض بيانات ثلاثية الأبعاد</p>
+            <span class="system-status">● نشط</span>
+        </div>
+
+        <div class="system-card">
+            <div class="system-icon">🔔</div>
+            <h3>Proactive Alerts</h3>
+            <p>تنبيهات ذكية: صحية، جوية، اجتماعية، تعليمية — رفع مستوى حياتك</p>
+            <span class="system-status">● نشط</span>
+        </div>
+
+        <div class="system-card">
+            <div class="system-icon">☎️</div>
+            <h3>Voice Calls</h3>
+            <p>مكالمات صوتية عالية الجودة مع دعم الهولوغرام التلقائي والترجمة الفورية</p>
+            <span class="system-status">● نشط</span>
+        </div>
+
+        <div class="system-card">
+            <div class="system-icon">🧠</div>
+            <h3>Conscious Systems</h3>
+            <p>ذكاء اصطناعي واعٍ ذاتياً — يتعلم ويتكيف ويتطور مع كل تفاعل</p>
+            <span class="system-status">● نشط</span>
+        </div>
+
+        <div class="system-card">
+            <div class="system-icon">👥</div>
+            <h3>Crew Manifest</h3>
+            <p>نظام تعاوني متعدد المستخدمين — فريق عمل ذكي مع صلاحيات مرنة</p>
+            <span class="system-status">● نشط</span>
+        </div>
+
+        <div class="system-card">
+            <div class="system-icon">🔄</div>
+            <h3>Emotional Translation</h3>
+            <p>ترجمة عاطفية — يفهم المشاعر خلف الكلمات ويرد بلغة القلب</p>
+            <span class="system-status">● نشط</span>
+        </div>
+    </section>
+
+    <div class="companion-selector">
+        <div class="companion-avatar active" onclick="selectCompanion('lover')" title="عاشق">💕</div>
+        <div class="companion-avatar" onclick="selectCompanion('doctor')" title="طبيب">🩺</div>
+        <div class="companion-avatar" onclick="selectCompanion('guide')" title="مرشد">✨</div>
+        <div class="companion-avatar" onclick="selectCompanion('analyst')" title="محلل">📊</div>
+    </div>
+
+    <div class="response-panel" id="responsePanel">
+        <h3 style="color: var(--primary); margin-bottom: 15px; font-family: 'Orbitron';">🛡️ الردود</h3>
+        <div id="responseContent"></div>
+    </div>
+
+    <div class="lang-selector">
+        <button class="lang-btn" onclick="toggleLanguage()">🌐 العربية</button>
+    </div>
+
+    <div class="voice-interface">
+        <div class="voice-wave">
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+        </div>
+        <button class="voice-btn" id="voiceBtn" onclick="toggleVoice()">🎙️</button>
+        <div class="voice-wave">
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+        </div>
+    </div>
+
+    <div class="hologram-overlay" id="hologramOverlay"></div>
+
+    <footer class="footer">
+        <p>🛡️ SIND NEXUS v4.0 | Voice-Powered AI Companion Platform | Built with ❤️</p>
+        <p style="margin-top: 10px; font-size: 0.8rem;">GeoMemory • VoiceDNA • Emotional Core • Hologram • 47 Languages</p>
+    </footer>
+
+    <script>
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 50; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.style.left = Math.random() * 100 + '%';
+            p.style.animationDelay = Math.random() * 15 + 's';
+            p.style.animationDuration = (10 + Math.random() * 10) + 's';
+            particlesContainer.appendChild(p);
+        }
+
+        let currentCompanion = 'lover';
+        let isRecording = false;
+        let ws = null;
+        let userId = 'user_' + Math.random().toString(36).substr(2, 9);
+
+        function connectWebSocket() {
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            ws = new WebSocket(`${protocol}//${window.location.host}/ws/voice/${userId}`);
+            ws.onopen = () => console.log('🎙️ Voice channel connected');
+            ws.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                handleResponse(data);
+            };
+            ws.onerror = (e) => console.error('WebSocket error:', e);
+            ws.onclose = () => setTimeout(connectWebSocket, 3000);
+        }
+
+        async function activateSystem() {
+            try {
+                const res = await fetch('/api/activate');
+                const data = await res.json();
+                showResponse('🛡️ ' + data.message, 'system');
+                showResponse('الأنظمة الجاهزة: ' + data.systems.join(' • '), 'info');
+                document.getElementById('hologramOverlay').classList.add('active');
+                setTimeout(() => document.getElementById('hologramOverlay').classList.remove('active'), 2000);
+                connectWebSocket();
+            } catch (e) {
+                showResponse('⚠️ جرب قول: "سند نكسس اونلاين"', 'warning');
+            }
+        }
+
+        function selectCompanion(type) {
+            currentCompanion = type;
+            document.querySelectorAll('.companion-avatar').forEach(el => el.classList.remove('active'));
+            event.target.classList.add('active');
+            const names = { lover: '💕 العاشق', doctor: '🩺 الطبيب', guide: '✨ المرشد', analyst: '📊 المحلل' };
+            showResponse(`تم اختيار: ${names[type]}`, 'info');
+        }
+
+        function toggleVoice() {
+            const btn = document.getElementById('voiceBtn');
+            isRecording = !isRecording;
+            if (isRecording) {
+                btn.classList.add('recording');
+                btn.innerHTML = '⏹️';
+                showResponse('🎙️ جاري الاستماع... قل شيئاً', 'voice');
+                setTimeout(() => {
+                    if (ws && ws.readyState === WebSocket.OPEN) {
+                        ws.send(JSON.stringify({
+                            type: 'companion',
+                            companion_type: currentCompanion,
+                            message: 'مرحباً سند نيكسوس',
+                            language: 'ar'
+                        }));
+                    }
+                }, 2000);
+            } else {
+                btn.classList.remove('recording');
+                btn.innerHTML = '🎙️';
+            }
+        }
+
+        function handleResponse(data) {
+            if (data.type === 'companion_response') {
+                showResponse(data.response.response, 'companion');
+            } else if (data.type === 'voice_response') {
+                showResponse(data.response, 'voice');
+            } else if (data.type === 'hologram_active') {
+                document.getElementById('hologramOverlay').classList.add('active');
+                setTimeout(() => document.getElementById('hologramOverlay').classList.remove('active'), 3000);
+            }
+        }
+
+        function showResponse(text, type) {
+            const panel = document.getElementById('responsePanel');
+            const content = document.getElementById('responseContent');
+            panel.classList.add('active');
+            const msg = document.createElement('div');
+            msg.className = 'response-message';
+            msg.innerHTML = text;
+            content.appendChild(msg);
+            panel.scrollTop = panel.scrollHeight;
+            while (content.children.length > 10) {
+                content.removeChild(content.firstChild);
+            }
+        }
+
+        let currentLang = 'ar';
+        function toggleLanguage() {
+            currentLang = currentLang === 'ar' ? 'en' : 'ar';
+            document.querySelector('.lang-btn').innerHTML = currentLang === 'ar' ? '🌐 العربية' : '🌐 English';
+        }
+
+        window.onload = () => {
+            fetch('/api/status')
+                .then(r => r.json())
+                .then(data => console.log('🛡️ SIND NEXUS Status:', data))
+                .catch(() => console.log('⚠️ Backend not connected - demo mode'));
+        };
+    </script>
+</body>
+</html>
